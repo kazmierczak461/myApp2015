@@ -1,0 +1,1 @@
+angular.module('sampleApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'CalCtrl', 'CalService', 'TasksCtrl', 'ScheduleCtrl', 'ExamsCtrl', 'TasksService']);
