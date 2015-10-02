@@ -1,5 +1,5 @@
-angular.module('TasksCtrl', []).controller('TasksController', function($scope) {
+angular.module('TasksCtrl', []).controller('TasksController', function($scope,$http, Tasks) {
 
-	$scope.tagline = 'The square root of life is pi!';	
+
 
 });

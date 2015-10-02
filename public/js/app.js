@@ -1,1 +1,2 @@
-angular.module('sampleApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'CalCtrl', 'CalService', 'TasksCtrl', 'ScheduleCtrl', 'ExamsCtrl', 'TasksService']);
+var sampleApp = angular.module('sampleApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'CalCtrl', 'TasksCtrl',
+    'ScheduleCtrl', 'ExamsCtrl', 'RegisterCtrl','TasksService','UserService','FlashService'/*,'LoginCtrl','AuthenticationService', 'TasksService', 'CalService'*/]);

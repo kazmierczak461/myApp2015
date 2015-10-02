@@ -4,27 +4,36 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
 		// home page
 		.when('/', {
-			templateUrl: 'views/home.html',
+			templateUrl: 'views/home.ejs',
 			controller: 'MainController'
 		})
 
 		.when('/calendar', {
-			templateUrl: 'views/calendar.html',
+			templateUrl: 'views/calendar.ejs',
 			controller: 'CalController'
 		})
 
 		.when('/tasks', {
-			templateUrl: 'views/tasks.html',
+			templateUrl: 'views/tasks.ejs',
 			controller: 'TasksController'
 		})
 		.when('/schedule', {
-			templateUrl: 'views/schedule.html',
+			templateUrl: 'views/schedule.ejs',
 			controller: 'ScheduleController'
 		})
 		.when('/exams', {
-			templateUrl: 'views/exams.html',
+			templateUrl: 'views/exams.ejs',
 			controller: 'ExamsController'
-		});
+		})
+		.when('/register', {
+			controller: 'RegisterController',
+			templateUrl: 'views/register.ejs'
+		})
+	    /*.when('/login', {
+			controller: 'LoginController',
+			templateUrl: 'views/login.ejs'
+		});*/
+
 
 	$locationProvider.html5Mode(true);
 
