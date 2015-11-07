@@ -1,30 +1,21 @@
-﻿angular.module('LoginCtrl', []).controller('LoginController', function($scope,$http) {
+﻿angular.module('LoginCtrl', []).controller('LoginController', '$rootScope', '$location', 'AuthenticationService', function($scope, $rootScope, $location, AuthenticationService) {
 
-    $scope.tagline = 'The square root of life is pi!';
-    /*LoginController.$inject = ['$location', 'AuthenticationService', 'FlashService'];
-    function LoginController($location, AuthenticationService, FlashService) {
-        var vm = this;
+    AuthenticationService.ClearCredentials();
 
-        vm.login = login;
-
-        (function initController() {
-            // reset login status
-            AuthenticationService.ClearCredentials();
-        })();
-
-        function login() {
-            vm.dataLoading = true;
-            AuthenticationService.Login(vm.username, vm.password, function (response) {
-                if (response.success) {
-                    AuthenticationService.SetCredentials(vm.username, vm.password);
-                    $location.path('/');
-                } else {
-                    FlashService.Error(response.message);
-                    vm.dataLoading = false;
-                }
-            });
-        };
-    }*/
+    $scope.login = function () {
+        $scope.dataLoading = true;
+        AuthenticationService.Login($scope.username, $scope.password, function(response) {
+            if(response.success) {
+                AuthenticationService.SetCredentials($scope.username, $scope.password);
+                console.log("Login success");
+                $location.path('/');
+            } else {
+                $scope.error = response.message;
+                $scope.dataLoading = false;
+                console.log("Bad request");
+            }
+        });
+    };
 
 });
 

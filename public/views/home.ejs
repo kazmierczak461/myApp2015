@@ -1,16 +1,8 @@
-<div class="jumbotron text-center">
-	<h1>Home Page 4 Life</h1>
+<h1>Home</h1>
+<p>You're logged in!!</p>
+<p><a href="#/login">Logout</a></p>
 
-	<p>{{ tagline }}</p>
-	<h1>Hi {{vm.user.firstName}}!</h1>
-	<p>You're logged in!!</p>
-	<h3>All registered users:</h3>
-	<ul>
-		<li ng-repeat="user in vm.allUsers">
-			{{user.username}} ({{user.firstName}} {{user.lastName}})
-			- <a href="#" ng-click="vm.deleteUser(user.id)">Delete</a>
-		</li>
-	</ul>
-	<p>&nbsp;</p>
-	<p><a href="#/login" class="btn btn-primary">Logout</a></p>
-</div>
+<a ng-href="/?rand={{getRand()}}">link</a>
+
+
+// angular controller

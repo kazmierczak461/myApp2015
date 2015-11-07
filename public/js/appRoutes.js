@@ -1,4 +1,4 @@
-angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider',  function($routeProvider, $locationProvider) {
 
 	$routeProvider
 
@@ -29,10 +29,12 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 			controller: 'RegisterController',
 			templateUrl: 'views/register.ejs'
 		})
-	    /*.when('/login', {
-			controller: 'LoginController',
-			templateUrl: 'views/login.ejs'
-		});*/
+		.when('/login', {
+			templateUrl: 'views/login.ejs',
+			controller: 'LoginCtrl'
+		})
+		.otherwise({ redirectTo: '/login' });
+
 
 
 	$locationProvider.html5Mode(true);
