@@ -9,12 +9,12 @@
     "debug": "~2.2.0",
     "express": "~4.5.1",
     "express-session": "*",
+    "jsonwebtoken": "0.4.0",
     "method-override": "~2.0.2",
     "mongodb": "*",
     "mongoose": "~3.8.0",
     "monk": "*",
-    "ms": "^0.7.1",
-    "jsonwebtoken": "0.4.0"
+    "ms": "^0.7.1"
   },
   "devDependencies": {
     "angular-cookie": "^1.4.0",

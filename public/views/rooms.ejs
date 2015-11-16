@@ -1,0 +1,33 @@
+<div class="col-sm-offset-1 col-sm-4">
+	<h2 class="main-header">Add new room</h2>
+	<div class="form-group">
+		<label>Room Name</label>
+		<input class="form-control" ng-model="room.fullName">
+	</div>
+	<div class="form-group">
+		<label>Room Url Name</label>
+		<input class="form-control" ng-model="room.roomName">
+	</div>
+	<button class="btn btn-primary" ng-click="addRoom()">Add room</button>
+	<button class="btn btn-info" ng-click="updateRoom()">Update</button>
+	<button class="btn btn-default" ng-click="deselect()">Clear</button>
+</div>
+<div class="col-sm-offset-1 col-sm-10">
+	<h2 class="main-header">Existing rooms</h2>
+	<table class="table table-striped table-bordered">
+		<thead>
+		<tr>
+			<th>Room Name</th>
+			<th>Room Url name</th>
+			<th>Actions</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="room in roomslist | orderBy:'fullName' | filter: {'users' : userId}">
+			<td>{{room.fullName}}</td>
+			<td>{{room.roomName}}</td>
+			<td><a href="/subjects/id{{room._id}}"><button ng-click="getRoom(room._id)" class="btn btn-success">Visit Room</button></a>&nbsp;&nbsp;<button class="btn btn-warning" ng-click="showEditor = !showEditor ;editRoom(room._id) " >Edit</button>&nbsp;&nbsp;<button class="btn btn-danger" ng-click="removeRoom(room._id)">Remove</button></td>
+		</tr>
+		</tbody>
+	</table>
+</div>

@@ -1,133 +1,33 @@
-<h1>Schedule</h1>
-<div class="form-group">
-    <div class="btn btn-success" ng-click="form.settings.editSub = ! form.settings.editSub">Add new class</div>
+<div class="col-sm-offset-1 col-sm-4">
+    <h2 class="main-header">Add new room</h2>
+    <div class="form-group">
+        <label>Room Name</label>
+        <input class="form-control" ng-model="room.fullName">
+    </div>
+    <div class="form-group">
+        <label>Room Url Name</label>
+        <input class="form-control" ng-model="room.roomName">
+    </div>
+    <button class="btn btn-primary" ng-click="addRoom()">Add room</button>
+    <button class="btn btn-info" ng-click="updateRoom()">Update</button>
+    <button class="btn btn-default" ng-click="deselect()">Clear</button>
 </div>
-<div class="row form-group" ng-show="form.settings.editForm">
-    <div class="col-sm-2">
-        <input type="text" class="form-control" placeholder="Class name" ng-model="form.data.className">
-    </div>
-    <div class="col-sm-2">
-        <input type="text" class="form-control" placeholder="Class room" ng-model="form.data.classRoom">
-    </div>
-    <div class="col-sm-2">
-        <input type="text" class="form-control" placeholder="Teacher name" ng-model="form.data.teacher">
-    </div>
-    <div class="col-sm-12 form-group standard-margin20">
-        <tabset>
-            <tab heading="Monday">
-                <div class="row form-group">
-                    <div class="col-sm-2">
-                        <p>Begin of class</p>
-                        <fieldset class="x-timepicker-wrap" ng-disabled="tab.noClass"><timepicker ng-model="tab.beginclass" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-                    </div>
-                    <div class="col-sm-2">
-                        <p>End of class</p>
-                        <fieldset class="x-timepicker-wrap" ng-disabled="tab.noClass"><timepicker ng-model="tab.endClass" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-                    </div>
-                    <div class="col-sm-6 x-padding-top-50">
-                        <div class="checkbox">
-                            <label><input type="checkbox" ng-model="tab.noClass"><span>No classroom today</span></label>
-                        </div>
-                    </div>
-                </div>
-            </tab>
-            <tab heading="Tuesday">Static content</tab>
-            <tab heading="Wednesday">Static content1</tab>
-            <tab heading="Thursday">Static content</tab>
-            <tab heading="Friday">Static content1</tab>
-            <tab heading="Saturday">Static content</tab>
-            <tab heading="Sunday">Static content</tab>
-        </tabset>
-    </div>
+<div class="col-sm-offset-1 col-sm-10">
+    <h2 class="main-header">Existing rooms</h2>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Room Name</th>
+            <th>Room Url name</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="room in roomslist | orderBy:'fullName' | filter: {'users' : userId}">
+            <td>{{room.fullName}}</td>
+            <td>{{room.roomName}}</td>
+            <td><a href="/subjects/id{{room._id}}"><button ng-click="getRoom(room._id)" class="btn btn-success">Visit Room</button></a>&nbsp;&nbsp;<button class="btn btn-warning" ng-click="showEditor = !showEditor ;editRoom(room._id) " >Edit</button>&nbsp;&nbsp;<button class="btn btn-danger" ng-click="removeRoom(room._id)">Remove</button></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<table class="table">
-    <thead>
-    <tr>
-        <th>Subject</th>
-        <th>Teacher</th>
-        <th>Classroom</th>
-        <th>Action</th>
-        <th>&nbsp;</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr ng-show="form.settings.editSub">
-        <td><input class="form-control" ng-model="schedule.subject"></td>
-        <td><input class="form-control" ng-model="schedule.teacher"></td>
-        <td><input class="form-control" ng-model="schedule.classRoom"></td>
-        <td><button class="btn btn-primary" ng-click="addSubject()">Add Subject</button></td>
-        <td><button class="btn btn-info" ng-click="updateSubject()">Update</button>&nbsp;&nbsp;<button class="btn btn-info" ng-click="deselectSubject()">Clear</button></td>
-    </tr>
-    <tr ng-repeat="schedule in form.data.scheduleList">
-        <td>{{schedule.subject}}</td>
-        <td>{{schedule.teacher}}</td>
-        <td>{{schedule.classRoom}}</td>
-        <td><button class="btn btn-danger" ng-click="remove(schedule._id)">Remove</button></td>
-        <td><button class="btn btn-warning" ng-click="edit(schedule._id) ; form.settings.editSub = ! form.settings.editSub">Edit</button></td>
-    </tr>
-    </tbody>
-<tabset class="x-tabs-padding-big">
-    <tab ng-repeat="tab in form.data.days" heading="{{ tab.type | limitTo:3 }}">
-        <div class="row form-group">
-            <div class="col-sm-3">
-                <p translate="dashboard-business-hours.open"></p>
-                <fieldset class="x-timepicker-wrap" ng-disabled="tab.closed || !permissions.MODIFY_CONTENT_MODULETYPE_BUSINESS_HOURS"><timepicker ng-model="tab.open1" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-            </div>
-            <div class="col-sm-3">
-                <p translate="dashboard-business-hours.close"></p>
-                <fieldset class="x-timepicker-wrap" ng-disabled="tab.closed || !permissions.MODIFY_CONTENT_MODULETYPE_BUSINESS_HOURS"><timepicker ng-model="tab.close1" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-            </div>
-            <div class="col-sm-6 x-padding-top-50">
-                <div class="checkbox">
-                    <label><input type="checkbox" ng-model="tab.closed" ng-disabled="!permissions.MODIFY_CONTENT_MODULETYPE_BUSINESS_HOURS"><span translate="dashboard-business-hours.closed"></span></label>
-                </div>
-                <div class="checkbox">
-                    <label><input type="checkbox" ng-model="tab.show2Time" ng-disabled="tab.closed || !permissions.MODIFY_CONTENT_MODULETYPE_BUSINESS_HOURS"><span translate="dashboard-business-hours.2periods"></span></label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row form-group" ng-show="tab.show2Time">
-            <div class="col-sm-3">
-                <p translate="dashboard-business-hours.open"></p>
-                <fieldset class="x-timepicker-wrap" ng-disabled="tab.closed"><timepicker ng-model="tab.open2" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-            </div>
-            <div class="col-sm-3">
-                <p translate="dashboard-business-hours.close"></p>
-                <fieldset class="x-timepicker-wrap" ng-disabled="tab.closed"><timepicker ng-model="tab.close2" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-            </div>
-        </div>
-    </tab>
-</tabset>
-
-<tab ng-repeat="tab in form.data.schedule" heading="{{ tab.type | limitTo:3 }}">
-    <div class="row form-group">
-        <div class="col-sm-2">
-            <p>Begin of class</p>
-            <fieldset class="x-timepicker-wrap" ng-disabled="tab.noClass"><timepicker ng-model="tab.startTime" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-        </div>
-        <div class="col-sm-2">
-            <p>End of class</p>
-            <fieldset class="x-timepicker-wrap" ng-disabled="tab.noClass"><timepicker ng-model="tab.endTime" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-        </div>
-        <div class="col-sm-6 x-padding-top-50">
-            <div class="checkbox">
-                <label><input type="checkbox" ng-model="tab.noClass"><span>No class </span></label>
-            </div>
-            <div class="checkbox">
-                <label><input type="checkbox" ng-model="tab.show2Time" ng-disabled="tab.closed || !permissions.MODIFY_CONTENT_MODULETYPE_BUSINESS_HOURS"><span translate="dashboard-business-hours.2periods"></span></label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row form-group" ng-show="tab.show2Time">
-        <div class="col-sm-3">
-            <p translate="dashboard-business-hours.open"></p>
-            <fieldset class="x-timepicker-wrap" ng-disabled="tab.closed"><timepicker ng-model="tab.open2" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-        </div>
-        <div class="col-sm-3">
-            <p translate="dashboard-business-hours.close"></p>
-            <fieldset class="x-timepicker-wrap" ng-disabled="tab.closed"><timepicker ng-model="tab.close2" hour-step="form.settings.hstep" minute-step="form.settings.mstep" show-meridian="form.settings.showMeridian"></timepicker></fieldset>
-        </div>
-    </div>
-</tab>
