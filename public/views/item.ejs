@@ -1,0 +1,177 @@
+<div class="row">
+    <div class="col-sm-offset-2 col-sm-8" >
+        <h1>{{subject.name}}</h1>
+        <p>Prowadzący: {{subject.teacher}}</p>
+        <hr>
+        <br>
+        <h3 ng-click="showEvents = ! showEvents" ng-show="!showEvents" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-plus fa-fw"></i> &nbsp;Events</h3>
+        <h3 ng-click="showEvents = ! showEvents" ng-show="showEvents" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-minus fa-fw"></i> &nbsp;Events</h3>
+        <div class="row" ng-show="showEvents">
+            <div class="col-sm-4">
+                <h4 class="text-left">Add New Event</h4>
+                <div class="form-group text-left" ng-show="showEvents" ng-hide="editEvents">
+                    <button class="btn btn-success text-right" ng-click="editEvents = ! editEvents ; event.subject = subjectId" ng-hide="editEvents">Add Event</button>
+                </div>
+                <div class="form-group" ng-show="editEvents">
+                        <input placeholder="Event name" class="form-control" ng-model="event.title">
+                        <input placeholder="Event place" class="form-control" ng-model="event.place">
+                        <input placeholder="HH:MM:SS" class="form-control" ng-model="event.time">
+                        <input placeholder="YYYY-MM-DD" class="form-control" ng-model="event.date">
+                    <textarea placeholder="Event description" class="form-control" rows="3" ng-model="event.desc"></textarea>
+                        <input class="form-control" ng-model="event.subject" style="display: none;">
+                        <button class="btn btn-primary" ng-click="editEvents = ! editEvents ; addEvent()">Save</button>
+                        <button class="btn btn-danger" ng-click="editEvents = ! editEvents ; deselect()">Cancel</button>
+
+                </div>
+            </div>
+            <div class="col-sm-offset-1 col-sm-7">
+                <h4 class="text-left">{{subject.name}} events</h4>
+                <div ng-repeat="event in eventlist | filter: {'subject' : subject._id}">
+                    <div ng-show="!eventlist.length">No events</div>
+                    <div ng-hide="showEditor">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <b>{{event.title}}</b>
+                            </div>
+                            <div class="col-sm-8 text-right">
+                                <p>{{event.date}}, {{event.time}}</p>
+                            </div>
+                        </div>
+                        <p>{{event.desc}}</p>
+                        <small>{{event.place}}</small>
+                        <div class="form-group">
+                            <button class="btn btn-warning" ng-click="showEditor = !showEditor ; editEvent(event._id) " ng-hide="showEditor">Edit</button>&nbsp;&nbsp;<button class="btn btn-danger" ng-click="removeEvent(event._id)">Remove</button>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="showEditor">
+                        <div class="col-sm-4">
+                            <input placeholder="Event name" class="form-control" ng-model="event.title">
+                            <input placeholder="Event place" class="form-control" ng-model="event.place">
+                            <input placeholder="HH:MM:SS" class="form-control" ng-model="event.time">
+                            <input placeholder="YYYY-MM-DD" class="form-control" ng-model="event.date">
+                            <input class="form-control" ng-model="event.subject" style="display: none;">
+                            <button class="btn btn-primary" ng-click="update(event) ; showEditor = ! showEditor " >Save</button>
+                            <button class="btn btn-danger" ng-click="showEditor = ! showEditor ; deselect()">Cancel</button>
+                        </div>
+                        <div class="col-sm-8">
+                            <textarea placeholder="Event description" class="form-control" rows="6" ng-model="event.desc"></textarea>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+        </div>
+        <h3 ng-click="showFiles = ! showFiles" ng-show="!showFiles" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-plus fa-fw"></i> &nbsp;Files</h3>
+        <h3 ng-click="showFiles = ! showFiles" ng-show="showFiles" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-minus fa-fw"></i> &nbsp;Files</h3>
+        <div ng-show="showFiles">
+            <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
+            <h3>Upload files</h3>
+            <input type="file" nv-file-select="" uploader="uploader" multiple  /><br/>
+
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="50%">Name</th>
+                    <th ng-show="uploader.isHTML5">Size</th>
+                    <th ng-show="uploader.isHTML5">Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in uploader.queue">
+                    <td><strong>{{ item.file.name }}</strong></td>
+                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                    <td ng-show="uploader.isHTML5">
+                        <div class="progress" style="margin-bottom: 0;">
+                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td>
+                    <td nowrap>
+                        <button type="button" class="btn btn-success btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                            <span class="glyphicon glyphicon-upload"></span> Upload
+                        </button>
+                        <button type="button" class="btn btn-warning btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger btn-xs" ng-click="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span> Remove
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <div>
+                    Queue progress:
+                    <div class="progress" style="">
+                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-success btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Upload all
+                </button>
+                <button type="button" class="btn btn-warning btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                </button>
+                <button type="button" class="btn btn-danger btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+                <button class="btn btn-default" ng-click="showStatus()">show status</button>
+            </div>
+        </div>
+        <h3 ng-click="showImages = ! showImages" ng-show="!showImages" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-plus fa-fw"></i> &nbsp;Images</h3>
+        <h3 ng-click="showImages = ! showImages" ng-show="showImages" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-minus fa-fw"></i> &nbsp;Images</h3>
+        <h3 ng-click="showPosts = ! showPosts" ng-show="!showPosts" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-plus fa-fw"></i> &nbsp;Posts</h3>
+        <h3 ng-click="showPosts = ! showPosts" ng-show="showPosts" style="cursor: pointer" class="main-header main-header-items"><i class="fa fa-minus fa-fw"></i> &nbsp;Posts</h3>
+        <div class="row" ng-show="showPosts">
+            <div class="col-sm-4">
+                <h4 class="text-left">Add New Post</h4>
+                <div class="form-group text-left" ng-show="postEditor" ng-hide="postEditor">
+                    <button class="btn btn-success text-right" ng-click="postEditor = ! postEditor" ng-hide="postEditor">Add Post</button>
+                </div>
+                <div class="form-group" ng-show="postEditor">
+                    <textarea placeholder="Your post" class="form-control" rows="3" ng-model="post.post"></textarea>
+                    <button class="btn btn-primary" ng-click="postEditor = ! postEditor ; addPost()">Save</button>
+                    <button class="btn btn-danger" ng-click="postEditor = ! postEditor ; deselect()">Cancel</button>
+
+
+                </div>
+            </div>
+            <div class="col-sm-offset-1 col-sm-7" style="height: 300px;overflow: auto;">
+                <div class="row post-box" ng-repeat="post in postList | filter: {'subject' : subject._id}">
+                    <div class="col-sm-1">
+                        <i class="fa fa-quote-left" ng-class="{'text-info': isYourPost(post.user)}"></i>&nbsp;
+                    </div>
+                    <div class="col-sm-11">
+                        <b ng-class="{'text-info': isYourPost(post.user)}">{{post.user}}</b><br>
+                        <small class="text-muted"><!--{{post.date | date:'HH:mm:ss'}}, {{post.date | date:'dd/MM/yyyy}}--></small>
+                        <br>
+                        <small ng-hide="editSinglePost">{{post.post}}</small>
+                        <a ng-class="{'editPostNone': !isYourPost(post.user)}" ng-hide="editSinglePost" ng-click="editSinglePost = ! editSinglePost ; editPost(post._id)" style="cursor: pointer"><small class="text-primary">Edit</small></a>
+                        <textarea ng-show="editSinglePost" placeholder="Your post" class="form-control" rows="3" ng-model="post.post"></textarea>
+                    <button class="btn btn-default" ng-show="editSinglePost" ng-click="editSinglePost = ! editSinglePost ; updatePost(post)">Save</button>&nbsp;<button ng-show="editSinglePost" class="btn btn-default" ng-click="editSinglePost = ! editSinglePost ; deselect()">Cancel</button>
+                    <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-sm-offset-1 col-sm-10">
+
+
+    </div>
+
+</div>

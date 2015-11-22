@@ -16,9 +16,13 @@ angular.module('appRoutes', [])
 				controller: 'RoomController'
 			})
 
-			.when('/subjects/:id', {
+			.when('/subjects', {
 				templateUrl: 'views/subjects.ejs',
 				controller: 'SubjectController'
+			})
+			.when('/item', {
+				templateUrl: 'views/item.ejs',
+				controller: 'ItemController'
 			})
 			.when('/schedule', {
 				templateUrl: 'views/schedule.ejs',

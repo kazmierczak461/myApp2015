@@ -24,7 +24,9 @@ angular.module('RoomCtrl', []).controller('RoomController', function($scope,$htt
 
 
 	$scope.addRoom = function() {
-		console.log($scope.room);
+		$scope.room.users = [];
+		$scope.room.users.push($scope.userId);
+		console.log($scope.room.users);
 		$http.post('/rooms', $scope.room).success(function(response) {
 			console.log(response);
 			refresh();
@@ -45,9 +47,9 @@ angular.module('RoomCtrl', []).controller('RoomController', function($scope,$htt
 		});
 	};
 
-	$scope.updateRoom = function() {
-		console.log($scope.room._id);
-		$http.put('/rooms/' + $scope.room._id, $scope.room).success(function(response) {
+	$scope.updateRoom = function(room) {
+		console.log(room._id);
+		$http.put('/rooms/' + room._id, room).success(function(response) {
 			refresh();
 		})
 	};
@@ -55,6 +57,7 @@ angular.module('RoomCtrl', []).controller('RoomController', function($scope,$htt
 	$scope.deselect = function() {
 		$scope.room = "";
 	};
+
 	refresh();
 
 });

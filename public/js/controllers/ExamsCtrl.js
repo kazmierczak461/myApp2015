@@ -6,7 +6,6 @@ angular.module('ExamsCtrl', []).controller('ExamsController', function($scope,$h
             console.log("I got the data I requested");
             $scope.contactlist = response;
             $scope.contact = "";
-            console.log(response);
         });
     };
 
@@ -15,7 +14,6 @@ angular.module('ExamsCtrl', []).controller('ExamsController', function($scope,$h
     $scope.addContact = function() {
         console.log($scope.contact);
         $http.post('/contactlist', $scope.contact).success(function(response) {
-            console.log(response);
             refresh();
         });
     };

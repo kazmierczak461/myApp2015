@@ -1,5 +1,5 @@
 var sampleApp = angular.module('sampleApp', ['ngRoute', 'appRoutes', 'MainCtrl', 'RoomCtrl', 'SubjectCtrl',
-    'ScheduleCtrl', 'ExamsCtrl', 'RegisterCtrl','TasksService','UserService','FlashService','RoomService','angularFileUpload','AuthenticationService','BaseService','ngCookies','LoginCtrl'/*,'LoginCtrl','AuthenticationService', 'TasksService', 'CalService'*/])
+    'ScheduleCtrl', 'ExamsCtrl', 'RegisterCtrl','TasksService','UserService','FlashService','RoomService','angularFileUpload','AuthenticationService','BaseService','ngCookies','LoginCtrl','ItemCtrl'/*,'LoginCtrl','AuthenticationService', 'TasksService', 'CalService'*/])
 
 sampleApp.constant('AUTH_EVENTS', {
     loginSuccess: 'auth-login-success',

@@ -2,6 +2,24 @@ angular.module('SubjectCtrl', []).controller('SubjectController', function($scop
 
 
 
+	$scope.actualDate = new Date();
+
+	function formatDate(date) {
+		var d = new Date(date),
+			month = '' + (d.getMonth() + 1),
+			day = '' + d.getDate(),
+			year = d.getFullYear();
+
+		if (month.length < 2) month = '0' + month;
+		if (day.length < 2) day = '0' + day;
+
+		return [year, month, day].join('-');
+	}
+
+	$scope.getSubject= function(id){
+		console.log('Id from subject Ctrl' + id);
+		RoomService.postSubject(id);
+	};
 
 	var refresh = function() {
 		$http.get('/subjects').success(function(response) {
@@ -10,84 +28,59 @@ angular.module('SubjectCtrl', []).controller('SubjectController', function($scop
 			$scope.subject = "";
 			console.log($scope.subjectlist);
 		});
+		$http.get('/eventsList').success(function(response) {
+			console.log("I got the data I requested");
+			$scope.eventlist = response;
+			$scope.event = "";
+			console.log($scope.eventlist);
+		});
 	};
 
 	refresh();
 
-	$scope.id = $routeParams.id;
-	$scope.uploader = new FileUploader();
-	$scope.showEditor = false;
 
-	var uploader = $scope.uploader = new FileUploader({
-		url: 'file:///Users/kazmierczak/Beng/'
-
-	});
-
-	$scope.showStatus =  function(){
-		console.log($scope.uploader);
-	};
-
-	// FILTERS
-
-	uploader.filters.push({
-		name: 'customFilter',
-		fn: function() {
-			return this.queue.length < 10;
-
-		}
-
-	});
 
 	$scope.getRand = function() {
 		return Math.floor(Math.random()*100000)
 	};
 
-	var refresh = function() {
-		$http.get('/rooms').success(function(response) {
-			console.log("I got the data I requested");
-			$scope.roomslist = response;
-			$scope.room = "";
-			console.log($scope.roomslist);
-		});
-	};
 
-	refresh();
-
-	$scope.addRoom = function() {
-		console.log($scope.room);
-		$http.post('/rooms', $scope.room).success(function(response) {
+	$scope.addSubject = function() {
+		console.log($scope.subject);
+		$http.post('/subjects', $scope.subject).success(function(response) {
 			console.log(response);
 			refresh();
 		});
 	};
 
-	$scope.removeRoom = function(id) {
+	$scope.removeSubject = function(id) {
 		console.log(id);
-		$http.delete('/rooms/' + id).success(function(response) {
+		$http.delete('/subjects/' + id).success(function(response) {
 			refresh();
 		});
 	};
 
-	$scope.editRoom = function(id) {
+	$scope.editSubject = function(id,subject) {
+		console.log('Before:' + subject);
 		console.log(id);
-		$http.get('/rooms/' + id).success(function(response) {
-			$scope.room = response;
+		$http.get('/subjects/' + id).success(function(response) {
+			$scope.subject = response;
 		});
 	};
 
-	$scope.updateRoom = function() {
-		console.log($scope.room._id);
-		$http.put('/rooms/' + $scope.room._id, $scope.room).success(function(response) {
+	$scope.updateSubject = function(subject) {
+		console.log(subject);
+		$http.put('/subjects/' + subject._id, subject).success(function(response) {
 			refresh();
 		})
 	};
 
 	$scope.deselect = function() {
-		$scope.room = "";
+		$scope.subject = "";
 	};
 
-	$scope.roomTest = RoomService.getRoom();
-	console.log('id: ' + $scope.id);
+	$scope.roomId = RoomService.getRoom();
+	console.log('id: ' + $scope.roomId);
 
 
 });

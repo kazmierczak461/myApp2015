@@ -16,10 +16,55 @@ body { padding-top:0px; }
 }
 .main-header{
     margin-top: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 .box{
     border: 1px solid grey;
     margin-right: 10px;
     margin-left: 10px;
+}
+.main-header-items:hover{
+    color: #40a070;
+}
+.form-control{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.col-sm-1 {
+    width: 4%;
+}
+.form-group{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+h4{
+    margin-bottom: 20px;
+}
+.event-title{
+    text-transform: uppercase;
+    font-size: 14px;
+}
+.event-box{
+    margin-bottom: 0px;
+}
+
+h4.event-title{
+    margin-bottom: 0px !important;
+}
+.event-list li:nth-child(2) b{
+    color: #d43f3a;
+}
+.event-list li:nth-child(3) b{
+    color: #ee9900;
+}
+.event-list li:nth-child(4) b{
+    color: #3e8f3e;
+}
+.post-box{
+    margin-bottom: 30px
+    height: 300px;
+    overflow: auto;
+}
+.editPostNone{
+    display: none;
 }

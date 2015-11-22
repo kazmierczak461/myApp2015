@@ -3,7 +3,7 @@ var resolve   = require('path').resolve;
 var express = require('express');
 var app = express();
 var mongojs = require('mongojs');
-var db = mongojs('localhost:27017/app', ['rooms','contactlist', 'rooms','userList','subjects']);
+var db = mongojs('localhost:27017/app', ['rooms','contactlist', 'rooms','userList','subjects','eventsList','posts']);
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 
@@ -197,7 +197,6 @@ app.put('/contactlist/:id', function (req, res) {
 });
 //subjects
 
-//contactList db
 app.get('/subjects', function (req, res) {
     console.log('I received a GET request');
 
@@ -230,6 +229,8 @@ app.get('/subjects/:id', function (req, res) {
     });
 });
 
+
+
 app.put('/subjects/:id', function (req, res) {
     var id = req.params.id;
     console.log(req.body.name);
@@ -241,6 +242,119 @@ app.put('/subjects/:id', function (req, res) {
         }
     );
 });
+
+//eventList db
+app.get('/eventsList', function (req, res) {
+    console.log('I received a GET request');
+
+    db.eventsList.find(function (err, docs) {
+        console.log(docs);
+        res.json(docs);
+    });
+});
+
+app.post('/eventsList', function (req, res) {
+    console.log(req.body);
+    db.eventsList.insert(req.body, function(err, doc) {
+        res.json(doc);
+    });
+});
+
+
+
+app.delete('/eventsList/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(id);
+    db.eventsList.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+        res.json(doc);
+    });
+});
+
+app.put('/eventsList/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(req.body.name);
+    db.eventsList.findAndModify({
+            query: {_id: mongojs.ObjectId(id)},
+            update: {$set: {title: req.body.title, desc: req.body.desc, date: req.body.date, time: req.body.time, place: req.body.place, subject: req.body.subject}},
+            new: true}, function (err, doc) {
+            res.json(doc);
+        }
+    );
+});
+
+app.get('/eventsList/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(id);
+    db.eventsList.findOne({_id: mongojs.ObjectId(id)}, function (err, doc) {
+        res.json(doc);
+    });
+});
+
+//posts db
+app.get('/posts', function (req, res) {
+    console.log('I received a GET request');
+
+    db.posts.find(function (err, docs) {
+        console.log(docs);
+        res.json(docs);
+    });
+});
+
+app.post('/posts', function (req, res) {
+    console.log(req.body);
+    db.posts.insert(req.body, function(err, doc) {
+        res.json(doc);
+    });
+});
+
+
+
+app.delete('/posts/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(id);
+    db.posts.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+        res.json(doc);
+    });
+});
+
+app.put('/posts/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(req.body.name);
+    db.posts.findAndModify({
+            query: {_id: mongojs.ObjectId(id)},
+            update: {$set: {date: req.body.date, time: req.body.time, post: req.body.post, subject: req.body.subject, user: req.body.user}},
+            new: true}, function (err, doc) {
+            res.json(doc);
+        }
+    );
+});
+
+app.get('/posts/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(id);
+    db.posts.findOne({_id: mongojs.ObjectId(id)}, function (err, doc) {
+        res.json(doc);
+    });
+});
+
+
+/*
+app.post('/postsList', function (req, res) {
+    console.log(req.body);
+    db.postsList.insert(req.body, function(err, doc) {
+        res.json(doc);
+    });
+});
+
+
+
+app.delete('/postList/:id', function (req, res) {
+    var id = req.params.id;
+    console.log(id);
+    db.postList.remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+        res.json(doc);
+    });
+});*/
 
 // get all data/stuff of the body (POST) parameters
 app.use(logger('dev'));  // log every request to the console
